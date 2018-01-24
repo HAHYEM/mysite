@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%
+	String result = request.getParameter("result");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +32,7 @@
 		<div id="navigation">
 			<ul>
 				<li><a href="">HAHYEM</a></li>
-				<li><a href="">방명록</a></li>
+				<li><a href="/mysite/user?a=list.jsp">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
 		</div> <!-- /navigation -->
@@ -48,9 +50,13 @@
 						<label class="block-label">패스워드</label> 
 						<input name="password" type="password" value="">
 						
-								
-								<P>로그인이 실패했습니다. 다시입력해주세요</P>
-						
+								<%
+									if("fail".equals(result)){
+								%>
+									<P>로그인이 실패했습니다.<br>다시 입력해주세요</P>
+								<%
+									}
+								%>
 	
 						<input type="submit" value="로그인">
 					</form>
@@ -60,7 +66,7 @@
 		</div><!-- /wrapper -->
 		
 		<div id="footer">
-			<p>(c)opyright 2015,2016,2017</p>
+			<p>(c)opyright 2015,2016,2017,2018</p>
 		</div> <!-- /footer -->
 		
 	</div> <!-- /container -->

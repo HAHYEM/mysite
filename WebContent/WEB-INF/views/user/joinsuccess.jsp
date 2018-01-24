@@ -30,7 +30,7 @@
 		<div id="navigation">
 			<ul>
 				<li><a href="">황일영</a></li>
-				<li><a href="">방명록</a></li>
+				<li><a href="/mysite/user?a=list.jsp">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
 		</div> <!-- /navigation -->

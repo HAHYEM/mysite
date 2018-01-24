@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +13,8 @@
 			<h1>MySite</h1>
 			<ul>
 				<!-- 로그인 전 -->
-				<li><a href="">로그인</a></li>
-				<li><a href="">회원가입</a></li>
+				<li><a href="/mysite/user?a=loginform">로그인</a></li>
+				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
 				
 				<!-- 로그인 후 -->
 				<!-- 
@@ -29,7 +28,7 @@
 		<div id="navigation">
 			<ul>
 				<li><a href="">황일영</a></li>
-				<li><a href="">방명록</a></li>
+				<li><a href="/mysite/gb?a=list.jsp">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
 		</div> <!-- /navigation -->
@@ -38,11 +37,13 @@
 			<div id="content">
 				<div id="guestbook" class="delete-form">
 					
-					<form method="" action="">
+					<form method="post" action="/mysite/gb">
 						
 						<label>비밀번호</label>
 						<input type="password" name="password">
 						<input type="submit" value="확인">
+						<input type = "hidden" name="a" value= "delete">
+						<input type = "hidden" value= <%= request.getParameter("no")%> name="no">
 					</form>
 					<a href="">방명록 리스트</a>
 					
