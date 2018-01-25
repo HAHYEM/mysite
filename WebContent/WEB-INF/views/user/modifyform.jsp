@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.UserVo" %>
-<%
-	UserVo authUser = (UserVo)request.getAttribute("authUser");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,35 +12,11 @@
 
 	<div id="container">
 		
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-			<%
-				if(authUser == null){
-			%>
-				<!-- 로그인 전 -->
-				<li><a href="/mysite/user?a=loginform">로그인</a></li>
-				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
-			<%
-				}else{
-			%>	
-				<!-- 로그인 후 -->
-				<li><a href="user?a=modify">회원정보수정</a></li>
-				<li><a href="/mysite/user?a=logout">로그아웃</a></li> 
-				<li> <%=authUser.getName() %>님 안녕하세요^^;</li>
-			<%
-				}
-			%>	
-			</ul>
-		</div> 
+		<!--header -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 				
-		<div id="navigation">
-			<ul>
-				<li><a href="">HAHYEM</a></li>
-				<li><a href="/mysite/user?a=list.jsp">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<!--navigation-->
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 		
 		<div id="wrapper">
 			<div id="content">
@@ -55,23 +29,26 @@
 						<input id="name" name="name" type="text" value="" />
 	
 						<label class="block-label" for="email">이메일</label>
-						<strong><%=authUser.getEmail() %></strong>
+						<strong>${authUser.email}</strong>
 						
 						<label class="block-label">패스워드</label>
 						<input name="password" type="password" value="" />
 						
+			<legend>성별</legend>
+				<c:choose>
+					<c:when test="${'male' == authUser.gender}">
 						<fieldset>
-							<legend>성별</legend>
-							<% if("male".equals(authUser.getGender())) { %>
 							<label>여</label> <input type="radio" name="gender" value="female" >
 							<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
-							<%}else{ %>
+						</fieldset>
+					</c:when>
+					<c:otherwise>
+						<fieldset>
 							<label>여</label> <input type="radio" name="gender" value="female" checked="checked" >
 							<label>남</label> <input type="radio" name="gender" value="male" >
-							<%} %>
-							
 						</fieldset>
-						
+					</c:otherwise>
+				</c:choose>
 						<input type="submit" value="수정완료">
 						
 					</form>
@@ -79,9 +56,8 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017,2018</p>
-		</div> <!-- /footer -->
+		<!--footer-->
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import> 
 		
 	</div> <!-- /container -->
 

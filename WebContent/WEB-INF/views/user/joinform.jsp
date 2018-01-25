@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -11,29 +12,11 @@
 
 	<div id="container">
 		
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<!-- 로그인 전 -->
-				<li><a href="/mysite/user?a=loginform">로그인</a></li>
-				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
+		<!--header -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 				
-				<!-- 로그인 후 -->
-				<!-- 
-				<li><a href="">회원정보수정</a></li>
-				<li><a href="">로그아웃</a></li> 
-				<li> 황일영님 안녕하세요^^;</li>
-				-->
-			</ul>
-		</div> <!-- /header -->
-				
-		<div id="navigation">
-			<ul>
-				<li><a href="">황일영</a></li>
-				<li><a href="/mysite/user?a=list.jsp">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<!--navigation-->
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 			
 		<div id="wrapper">
 			<div id="content">
@@ -48,8 +31,6 @@
 						<input id="email" name="email" type="text" value="">
 						<input type="button" value="id 중복체크">	
 						
-						<!-- 나중에 할거야 -->
-						
 						<label class="block-label">패스워드</label>
 						<input name="password" type="password" value="">
 						
@@ -63,9 +44,7 @@
 							<legend>약관동의</legend>
 							<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
 							<label>서비스 약관에 동의합니다.</label>
-							
-						<!-- 나중에 할거야 -->
-						
+
 						</fieldset>
 						<input type="text" name="a" value="join">
 						<input type="submit" value="가입하기">
@@ -76,9 +55,8 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017</p>
-		</div> <!-- /footer -->
+		<!--footer-->
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import> 
 		
 	</div> <!-- /container -->
 

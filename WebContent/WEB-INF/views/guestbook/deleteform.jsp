@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,29 +10,11 @@
 <body>
 	<div id="container">
 		
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<!-- 로그인 전 -->
-				<li><a href="/mysite/user?a=loginform">로그인</a></li>
-				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
+		<!--header -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 				
-				<!-- 로그인 후 -->
-				<!-- 
-				<li><a href="">회원정보수정</a></li>
-				<li><a href="">로그아웃</a></li> 
-				<li> 황일영님 안녕하세요^^;</li>
-				-->
-			</ul>
-		</div> <!-- /header -->
-		
-		<div id="navigation">
-			<ul>
-				<li><a href="">황일영</a></li>
-				<li><a href="/mysite/gb?a=list.jsp">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<!--navigation-->
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 		
 		<div id="wrapper">
 			<div id="content">
@@ -43,17 +26,16 @@
 						<input type="password" name="password">
 						<input type="submit" value="확인">
 						<input type = "hidden" name="a" value= "delete">
-						<input type = "hidden" value= <%= request.getParameter("no")%> name="no">
+						<input type = "hidden" value= ${param.no } name="no">
 					</form>
-					<a href="">방명록 리스트</a>
+					<a href="/mysite/gb?a=list">방명록 리스트</a>
 					
 				</div>
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017</p>
-		</div> <!-- /footer -->
+		<!--footer-->
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import> 
 		
 	</div> <!-- /container -->
 

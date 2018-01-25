@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	String result = request.getParameter("result");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,29 +12,11 @@
 
 	<div id="container">
 		
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<!-- 로그인 전 -->
-				<li><a href="/mysite/user?a=loginform">로그인</a></li>
-				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
+		<!--header -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 				
-				<!-- 로그인 후 -->
-				<!-- 
-				<li><a href="">회원정보수정</a></li>
-				<li><a href="">로그아웃</a></li> 
-				<li> 황일영님 안녕하세요^^;</li>
-				-->
-			</ul>
-		</div> <!-- /header -->
-		
-		<div id="navigation">
-			<ul>
-				<li><a href="">HAHYEM</a></li>
-				<li><a href="/mysite/user?a=list.jsp">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<!--navigation-->
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 
 		<div id="wrapper">
 			<div id="content">
@@ -49,15 +30,9 @@
 
 						<label class="block-label">패스워드</label> 
 						<input name="password" type="password" value="">
-						
-								<%
-									if("fail".equals(result)){
-								%>
+								<c:if test="${param.result == fail }">
 									<P>로그인이 실패했습니다.<br>다시 입력해주세요</P>
-								<%
-									}
-								%>
-	
+								</c:if>
 						<input type="submit" value="로그인">
 					</form>
 					
@@ -65,9 +40,8 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017,2018</p>
-		</div> <!-- /footer -->
+		<!--footer-->
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import> 
 		
 	</div> <!-- /container -->
 
