@@ -30,7 +30,7 @@
 
 						<label class="block-label">패스워드</label> 
 						<input name="password" type="password" value="">
-								<c:if test="${param.result == fail }">
+								<c:if test="${fail ne param.result}">
 									<P>로그인이 실패했습니다.<br>다시 입력해주세요</P>
 								</c:if>
 						<input type="submit" value="로그인">

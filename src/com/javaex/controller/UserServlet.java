@@ -17,8 +17,7 @@ import com.javaex.vo.UserVo;
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("user ¡¯¿‘");
 		request.setCharacterEncoding("UTF-8");
 
