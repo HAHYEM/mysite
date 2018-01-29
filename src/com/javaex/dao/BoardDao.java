@@ -27,7 +27,9 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = " SELECT b.no, b.title, b.user_no, b.hit, to_char(reg_date, 'YYYY-MM-DD HH:MI') regDate, b.content, u.no userNo, u.name userName"
-					+ " FROM board b, users u " + " WHERE b.user_no = u.no " + " ORDER BY b.no desc";
+						 + " FROM board b, users u " 
+						 + " WHERE b.user_no = u.no " 
+						 + " ORDER BY b.no desc";
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 
@@ -77,6 +79,76 @@ public class BoardDao {
 		return board;
 	}
 
+	public List<BoardVo> getList(String searchValue) {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> board = new ArrayList<>();
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = " SELECT b.no, b.title, b.user_no, b.hit, to_char(reg_date, 'YYYY-MM-DD HH:MI') regDate, b.content, u.no userNo, u.name userName"
+						 + " FROM board b, users u " 
+						 + " WHERE b.user_no = u.no "
+						 + "	   AND b.title like ? " 
+						 + " ORDER BY b.no desc";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%"+searchValue+"%");
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			while (rs.next()) {
+				BoardVo vo = new BoardVo();
+
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				int userNo = rs.getInt("userNo");
+				int hit = rs.getInt("hit");
+				String regDate = rs.getString("regDate");
+				String content = rs.getString("content");
+				String userName = rs.getString("userName");
+
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setUserNo(userNo);
+				vo.setHit(hit);
+				vo.setContent(content);
+				vo.setRegDate(regDate);
+				vo.setUserName(userName);
+				System.out.println(vo.toString());
+				board.add(vo);
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+
+			// 5. 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return board;
+	}
+
 	public void modify(String title, String content, int no) {
 		// 0. import java.sql.*; ctrl + shift + o
 		Connection conn = null;
@@ -91,7 +163,9 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 중요 3. SQL문 준비 / 바인딩 / 실행
-			String query = " UPDATE board " + " SET title = ?, content = ? " + " WHERE no = ?";
+			String query = " UPDATE board " 
+						 + " SET title = ?, content = ? " 
+						 + " WHERE no = ?";
 			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, title);
@@ -202,7 +276,9 @@ public class BoardDao {
 			// 3. SQL문 준비 / 바인딩 / 실행
 
 			String query = " SELECT b.no, b.title, b.user_no, b.hit, to_char(reg_date, 'YYYY-MM-DD HH:MI') regDate, b.content, u.no userNo"
-					+ " FROM board b, users u " + " WHERE b.user_no = u.no " + " ORDER BY b.no desc";
+						 + " FROM board b, users u " 
+						 + " WHERE b.user_no = u.no " 
+						 + " ORDER BY b.no desc";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, no);
@@ -262,7 +338,8 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = " INSERT INTO board " + " VALUES (seq_users_no.nextval, ?, ?, 0, sysdate, ?) ";
+			String query = " INSERT INTO board " 
+						 + " VALUES (seq_users_no.nextval, ?, ?, 0, sysdate, ?) ";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, boardVo.getTitle());
@@ -306,7 +383,9 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = " SELECT title, content, user_no, no, hit " + " FROM board " + " WHERE no = ? ";
+			String query = " SELECT title, content, user_no, no, hit " 
+						 + " FROM board " 
+						 + " WHERE no = ? ";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, no);
@@ -360,7 +439,8 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "DELETE FROM board WHERE no = ?";
+			String query = "DELETE FROM board " 
+						+ " WHERE no = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, no);
 
@@ -408,7 +488,9 @@ public class BoardDao {
 			// 3. SQL문 준비 / 바인딩 / 실행
 
 			String query = " SELECT b.no, b.title, b.user_no, b.hit, to_char(reg_date, 'YYYY-MM-DD HH:MI') regDate, b.content, u.no userNo"
-					+ " FROM board b, users u " + " WHERE b.user_no = u.no " + " ORDER BY b.no desc";
+						 + " FROM board b, users u " 
+						 + " WHERE b.user_no = u.no " 
+						 + " ORDER BY b.no desc";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, no);

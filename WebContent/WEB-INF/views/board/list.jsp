@@ -19,8 +19,8 @@
 		
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="bs?a=list" method="post">
+					<input type="text" id="kwd" name="searchValue" value="">
 					<input type="submit" value="찾기">
 				</form>
 
@@ -65,13 +65,25 @@
 				</table>
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
+						<c:if test="${Paging.pageNo>Paing.pageBlock}">
+						<li><a href="bs?a=list&pageNo=${Paging.prevPageNo()-1}">◀</a></li>
+						</c:if>
+						<c:forEach var="i" begin="${Paging.startPageNo}" end="${Paging.endPageNo }" step="1">
+							<c:choose>
+								<c:when test="${i ==Paging.pageNo }"><li class="selected">
+									<a href="bs?a=list&pageNo=${i }"> ${i }</a></li>
+								</c:when>
+								<c:otherwise><li><a href="bs?a=list&pageNo=${i}"> ${i} </a> </li> </c:otherwise>
+							</c:choose>
+						</c:forEach>
+									
+						<!-- <li><a href="">2</a></li>
 						<li class="selected">3</li>
 						<li><a href="">4</a></li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<li>5</li> -->
+						
+						<li><a href="bs?a=list&pageNo=${Paging.nextPageNo()+1}">▶</a></li>
+						
 					</ul>
 				</div>
 				<div class="bottom">

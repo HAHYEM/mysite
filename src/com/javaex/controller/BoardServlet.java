@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.BoardDao;
+import com.javaex.util.Paging;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
 import com.javaex.vo.UserVo;
@@ -27,13 +28,28 @@ public class BoardServlet extends HttpServlet {
 
 		if ("list".equals(actionName)) {
 			System.out.println("list 진입");
-			request.setCharacterEncoding("UTF-8");
 
 			BoardDao dao = new BoardDao();
 			List<BoardVo> bList = dao.getList();
-
+			String searchValue = request.getParameter("searchValue");
+			
+			//검색기능 추가
+			if(searchValue != null) {
+				bList = dao.getList(searchValue);
+				request.setAttribute("bList", bList);
+				WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+				return;
+			}
+			//페이징만들기 추가
+			Paging paging = new Paging();
+			paging.makePaging();
+			
+			//전체 글 수 가져오기
+			String totalCount = request.getParameter("pageNo"); //현재 페이지 번호 가져오기
+			
+			//Paging에 있는 것 가져오는 작업을 해야하는데.....
+			
 			request.setAttribute("bList", bList);
-
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 		
 		} else if ("modifyform".equals(actionName)) {
