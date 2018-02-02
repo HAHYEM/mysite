@@ -26,7 +26,7 @@
 
 				<table class="tbl-ex">
 					<tr>
-						<th>번호${lastPage }</th>
+						<th>번호</th>
 						<th>제목</th>
 						<th>글쓴이</th>
 						<th>조회수</th>
@@ -68,22 +68,20 @@
 						<c:if test="${currentPage-1>0}">
 						<li><a href="bs?a=list&page=${currentPage-1}">◀</a></li>
 						</c:if>
-						
-						<c:forEach var="i" begin="1" end="${lastPage}" step="1">
-							<c:choose>
-								<c:when test="${i <= currentPage +2 || i <= currentPage -2}">
-									<li class="">${i}	</li>
-								</c:when>
-							</c:choose>
-						</c:forEach>
-									
 					
-						
-						<!-- <li><a href="">2</a></li>
-						<li class="selected">3</li>
-						<li><a href="">4</a></li>
-						<li>5</li> -->
-						
+						<c:forEach var="i" begin="1" end="${lastPage}" step="1">
+								<c:choose>
+									<c:when test="${i == param.currentPage }">
+										<li class="selected"><a href="bs?a=list&page=${currentPage}">${i}</a></li>
+									</c:when>
+									 <c:otherwise>
+									 <c:if test="${i <= currentPage +2 && i >= currentPage -2}">
+										<a href="bs?a=list&page=${i}">${i}</a>
+									 </c:if>
+									 </c:otherwise> 
+								</c:choose>
+						</c:forEach>
+				
 						<c:if test="${currentPage !=lastPage }">
 						<li><a href="bs?a=list&page=${currentPage+1}">▶</a></li>
 						</c:if>
