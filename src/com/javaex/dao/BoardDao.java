@@ -79,6 +79,132 @@ public class BoardDao {
 		return board;
 	}
 
+	public List<BoardVo> getList(int page, int eachPage) {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> board = new ArrayList<>();
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "	SELECT *	"
+						 + "	FROM(SELECT ROWNUM rn, A.*	"
+						 + "	FROM (SELECT  B.no, B.title, B.content, B.hit, to_char(B.reg_date,'yy-mm-dd hh24:mi') regDate,B.user_no userNo, U.name userName	"
+						 + "		  FROM board B, users U		"
+						 + "		  WHERE B.user_no = U.no	"
+						 + "		  ORDER BY no DESC)A	"
+						 + "	ORDER BY rn		"
+						 + "	)	"
+						 + "	WHERE rn > ? 	"
+						 + "	AND rownum <=? 		";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, (page-1)*eachPage);
+			pstmt.setInt(2, eachPage);
+			
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			while (rs.next()) {
+				BoardVo vo = new BoardVo();
+
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				int userNo = rs.getInt("userNo");
+				int hit = rs.getInt("hit");
+				String regDate = rs.getString("regDate");
+				String content = rs.getString("content");
+				String userName = rs.getString("userName");
+
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setUserNo(userNo);
+				vo.setHit(hit);
+				vo.setContent(content);
+				vo.setRegDate(regDate);
+				vo.setUserName(userName);
+
+				board.add(vo);
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+
+			// 5. 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return board;
+	}
+	public int countList() {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int cnt = 0;
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = " SELECT count(*) cnt	"
+						 + " FROM board b, users u " 
+						 + " WHERE b.user_no = u.no " ;
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			if (rs.next()) {
+
+				cnt = rs.getInt("cnt");
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+
+			// 5. 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return cnt;
+	}
 	public List<BoardVo> getList(String searchValue) {
 		// 0. import java.sql.*;
 		Connection conn = null;

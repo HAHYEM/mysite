@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.BoardDao;
-import com.javaex.util.Paging;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
 import com.javaex.vo.UserVo;
@@ -20,36 +19,45 @@ import com.javaex.vo.UserVo;
 public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		System.out.println("servlet 진입");
 		String actionName = request.getParameter("a");
 
 		if ("list".equals(actionName)) {
 			System.out.println("list 진입");
+			//페이징만들기 추가
+			
+			int page = 1;	//현재 페이지
+			int eachPage = 5;
+			int totalCount = 0;
+			int lastPage = 0;
+			if(request.getParameter("page") != null) {
+			page =Integer.valueOf(request.getParameter("page"));
+			}
+			
+			
 
 			BoardDao dao = new BoardDao();
-			List<BoardVo> bList = dao.getList();
-			String searchValue = request.getParameter("searchValue");
+			List<BoardVo> bList = dao.getList(page,eachPage);
+			totalCount = dao.countList();
+			if(totalCount % eachPage != 0) {
+				lastPage = (totalCount / eachPage) +1;
+			}else {
+				lastPage = (totalCount / eachPage);
+			}
 			
 			//검색기능 추가
-			if(searchValue != null) {
+/*			if(searchValue != null) {
 				bList = dao.getList(searchValue);
 				request.setAttribute("bList", bList);
 				WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 				return;
-			}
-			//페이징만들기 추가
-			Paging paging = new Paging();
-			paging.makePaging();
-			
-			//전체 글 수 가져오기
-			String totalCount = request.getParameter("pageNo"); //현재 페이지 번호 가져오기
-			
-			//Paging에 있는 것 가져오는 작업을 해야하는데.....
-			
+			}*/
 			request.setAttribute("bList", bList);
+			request.setAttribute("currentPage", page);
+			request.setAttribute("lastPage", lastPage);
+			
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 		
 		} else if ("modifyform".equals(actionName)) {

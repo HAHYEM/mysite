@@ -26,7 +26,7 @@
 
 				<table class="tbl-ex">
 					<tr>
-						<th>번호</th>
+						<th>번호${lastPage }</th>
 						<th>제목</th>
 						<th>글쓴이</th>
 						<th>조회수</th>
@@ -65,25 +65,28 @@
 				</table>
 				<div class="pager">
 					<ul>
-						<c:if test="${Paging.pageNo>Paing.pageBlock}">
-						<li><a href="bs?a=list&pageNo=${Paging.prevPageNo()-1}">◀</a></li>
+						<c:if test="${currentPage-1>0}">
+						<li><a href="bs?a=list&page=${currentPage-1}">◀</a></li>
 						</c:if>
-						<c:forEach var="i" begin="${Paging.startPageNo}" end="${Paging.endPageNo }" step="1">
+						
+						<c:forEach var="i" begin="1" end="${lastPage}" step="1">
 							<c:choose>
-								<c:when test="${i ==Paging.pageNo }"><li class="selected">
-									<a href="bs?a=list&pageNo=${i }"> ${i }</a></li>
+								<c:when test="${i <= currentPage +2 || i <= currentPage -2}">
+									<li class="">${i}	</li>
 								</c:when>
-								<c:otherwise><li><a href="bs?a=list&pageNo=${i}"> ${i} </a> </li> </c:otherwise>
 							</c:choose>
 						</c:forEach>
 									
+					
+						
 						<!-- <li><a href="">2</a></li>
 						<li class="selected">3</li>
 						<li><a href="">4</a></li>
 						<li>5</li> -->
 						
-						<li><a href="bs?a=list&pageNo=${Paging.nextPageNo()+1}">▶</a></li>
-						
+						<c:if test="${currentPage !=lastPage }">
+						<li><a href="bs?a=list&page=${currentPage+1}">▶</a></li>
+						</c:if>
 					</ul>
 				</div>
 				<div class="bottom">
